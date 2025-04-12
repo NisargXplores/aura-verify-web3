@@ -1,73 +1,83 @@
-# Welcome to your Lovable project
+🧠 Project Overview – AuraVerify
 
-## Project info
+🌐 What is AuraVerify?
+AuraVerify is a decentralized biometric identity verification system built on the Solana blockchain. It combines wallet-based identity, biometric facial recognition, and blockchain immutability to enable secure, trustless, and reusable digital identity verification.
 
-**URL**: https://lovable.dev/projects/d89f45d1-bdb2-46bb-9966-c20a5309a17e
+🔁 How It Works – The Full Flow
+1. Wallet Connection
+The user connects any Solana wallet (Phantom, Backpack, etc.) using @jup-ag/unified-wallet-adapter.
 
-## How can I edit this code?
+The wallet address is the unique identity anchor for the user.
 
-There are several ways of editing your application.
+2. Personal Details Entry
+Users enter their:
 
-**Use Lovable**
+Full Name
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/d89f45d1-bdb2-46bb-9966-c20a5309a17e) and start prompting.
+Email Address
 
-Changes made via Lovable will be committed automatically to this repo.
+Date of Birth
 
-**Use your preferred IDE**
+Driving License Number
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+This data is linked to the user’s wallet address and stored securely in Firebase.
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+3. Biometric Registration
+Users register their face using a webcam/camera.
 
-Follow these steps:
+A custom facial recognition API (Flask) captures and stores the biometric encoding (not the raw image) in Firebase for security.
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+4. Biometric Verification
+On subsequent access or verification attempts:
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+The user is prompted to re-scan their face.
 
-# Step 3: Install the necessary dependencies.
-npm i
+Facial encodings are compared.
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
-```
+If a match is found, the identity is verified.
 
-**Edit a file directly in GitHub**
+5. Verified Identity
+Upon successful biometric verification, the user gets a “Verified” status.
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+This identity can be reused for other dApps, platforms, or KYC flows in the future.
 
-**Use GitHub Codespaces**
+⚙️ Technology Stack
+Layer	Stack Used
+Frontend	TypeScript, React (Vite), Tailwind CSS, Lucide Icons
+Wallet Auth	@jup-ag/unified-wallet-adapter (multi-wallet support)
+Backend	Flask (Python), RESTful APIs
+Biometric	Custom Facial Recognition API (face encodings using face_recognition)
+Database	Firebase (Realtime DB + Authentication)
+Blockchain	Solana, wallet public key acts as identity anchor
+🧠 Core Innovation
+✅ Web3 Native Identity: No need for passwords. Wallet + biometrics = future.
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+✅ Biometric Layer: Security like never before. Face is the new key.
 
-## What technologies are used for this project?
+✅ Decentralized & Reusable: One-time registration, infinite verifications.
 
-This project is built with:
+✅ DLT Security: Immutable and trustless — powered by blockchain technology.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+🔮 What’s Coming Next?
+In the upcoming hours of the hackathon:
 
-## How can I deploy this project?
+🔐 Write-back of verification hash to Solana for on-chain identity anchoring.
 
-Simply open [Lovable](https://lovable.dev/projects/d89f45d1-bdb2-46bb-9966-c20a5309a17e) and click on Share -> Publish.
+📊 Admin Dashboard for verifying and tracking user submissions.
 
-## Can I connect a custom domain to my Lovable project?
+🔁 Implement re-verification & timestamped logs.
 
-Yes it is!
+📱 Make UI fully responsive and mobile-ready.
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+🚨 Add fallback for failed biometric attempts (OTP / email validation).
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+🏆 Why This Project?
+With rising fraud and privacy issues, AuraVerify offers:
+
+A self-sovereign identity layer.
+
+Built on blockchain + biometrics.
+
+Useable across any Web3 or traditional platform needing trust-based onboarding.
+
+AuraVerify is the trust bridge between humans and decentralized systems.
