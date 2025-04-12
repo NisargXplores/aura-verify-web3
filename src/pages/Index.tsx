@@ -3,6 +3,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Shield, UserRound, Wallet, Users, Target, Lightbulb, GraduationCap, Compass } from "lucide-react";
 import Header from "@/components/layout/Header";
+import Navbar from "@/components/layout/Navbar";
 import GlassMorphismCard from "@/components/ui-elements/GlassMorphismCard";
 import AnimatedButton from "@/components/ui-elements/AnimatedButton";
 import WalletConnectionUI from "@/components/wallet/WalletConnectionUI";
@@ -14,32 +15,32 @@ const Index = () => {
 
   const teamMembers = [
     {
-      name: "Alex Rivera",
-      role: "Founder & CEO",
+      name: "Parth Gohil",
+      role: "Developer",
       avatar: "/team-member-1.png",
-      fallback: "AR",
-      bio: "Blockchain enthusiast with 10+ years in security and identity systems."
+      fallback: "PG",
+      bio: "Blockchain enthusiast with expertise in Solana development and identity verification systems."
     },
     {
-      name: "Sophia Chen",
-      role: "CTO",
+      name: "Devang Bhavsar",
+      role: "Developer",
       avatar: "/team-member-2.png",
-      fallback: "SC",
-      bio: "Former security architect at major tech companies with expertise in cryptography."
+      fallback: "DB",
+      bio: "Full-stack developer specializing in Web3 technologies and secure authentication systems."
     },
     {
-      name: "Marcus Johnson",
-      role: "Lead Developer",
+      name: "Nisarg Patel",
+      role: "Developer",
       avatar: "/team-member-3.png",
-      fallback: "MJ",
-      bio: "Full-stack developer specializing in Web3 and decentralized applications."
+      fallback: "NP",
+      bio: "Smart contract specialist with a focus on secure and efficient blockchain implementations."
     },
     {
-      name: "Leila Patel",
-      role: "Product Designer",
+      name: "Ashutosh Bhagat",
+      role: "Developer",
       avatar: "/team-member-4.png",
-      fallback: "LP",
-      bio: "UX/UI specialist focused on creating intuitive blockchain experiences."
+      fallback: "AB",
+      bio: "Front-end developer creating intuitive and secure user interfaces for blockchain applications."
     }
   ];
 
@@ -50,12 +51,13 @@ const Index = () => {
       <div className="absolute top-20 -left-24 w-96 h-96 rounded-full bg-web3-purple/5 blur-3xl pointer-events-none"></div>
       <div className="absolute bottom-20 -right-24 w-96 h-96 rounded-full bg-web3-blue/5 blur-3xl pointer-events-none"></div>
       
+      <Navbar />
       <Header />
       
       <main className="flex-grow flex flex-col items-center justify-center p-4 md:p-6 relative z-10">
         <div className="max-w-5xl w-full mx-auto">
           <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 gradient-text-primary leading-tight">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 font-heading bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent leading-tight">
               Decentralized Identity
               <br />
               Verification Platform
@@ -70,7 +72,7 @@ const Index = () => {
               <div className="h-12 w-12 rounded-lg bg-web3-purple/10 flex items-center justify-center mb-4">
                 <Wallet className="h-6 w-6 text-web3-purple" />
               </div>
-              <h3 className="text-xl font-medium mb-2">Connect Wallet</h3>
+              <h3 className="text-xl font-medium mb-2 font-heading">Connect Wallet</h3>
               <p className="text-gray-400 text-sm mb-4">
                 Securely connect your Solana wallet to begin the verification process.
               </p>
@@ -83,7 +85,7 @@ const Index = () => {
               <div className="h-12 w-12 rounded-lg bg-web3-blue/10 flex items-center justify-center mb-4">
                 <UserRound className="h-6 w-6 text-web3-blue" />
               </div>
-              <h3 className="text-xl font-medium mb-2">Verify Identity</h3>
+              <h3 className="text-xl font-medium mb-2 font-heading">Verify Identity</h3>
               <p className="text-gray-400 text-sm mb-4">
                 Submit your information and complete biometric verification.
               </p>
@@ -105,7 +107,7 @@ const Index = () => {
               <div className="h-12 w-12 rounded-lg bg-web3-teal/10 flex items-center justify-center mb-4">
                 <Shield className="h-6 w-6 text-web3-teal" />
               </div>
-              <h3 className="text-xl font-medium mb-2">Access Dashboard</h3>
+              <h3 className="text-xl font-medium mb-2 font-heading">Access Dashboard</h3>
               <p className="text-gray-400 text-sm mb-4">
                 View your verification status and manage your digital identity.
               </p>
@@ -150,16 +152,16 @@ const Index = () => {
           {/* About Us Section */}
           <section id="about" className="mb-24 scroll-mt-24">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 gradient-text-primary">About AuraVerify</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 font-heading bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">About BlockVerify</h2>
               <div className="h-1 w-24 bg-gradient-to-r from-web3-purple via-web3-blue to-web3-teal mx-auto rounded-full"></div>
             </div>
             
             <GlassMorphismCard className="p-8 md:p-12" neonBorder={true}>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
                 <div className="order-2 md:order-1">
-                  <h3 className="text-2xl font-bold mb-4 text-gradient">Redefining Digital Identity</h3>
+                  <h3 className="text-2xl font-bold mb-4 font-heading text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-white">Redefining Digital Identity</h3>
                   <p className="text-gray-300 mb-4">
-                    Founded in 2023, AuraVerify is pioneering a new approach to digital identity verification 
+                    Founded in 2023, BlockVerify is pioneering a new approach to digital identity verification 
                     using blockchain technology. We believe that individuals should have complete control over 
                     their personal data while still being able to prove their identity securely.
                   </p>
@@ -193,10 +195,10 @@ const Index = () => {
                   <div className="rounded-2xl overflow-hidden h-64 md:h-80 neo-blur hologram-effect">
                     <div className="absolute inset-0 flex items-center justify-center">
                       <div className="text-center">
-                        <div className="h-24 w-24 rounded-full bg-gradient-to-r from-web3-purple via-web3-blue to-web3-teal mx-auto flex items-center justify-center animate-rotate-slow">
+                        <div className="h-24 w-24 rounded-full bg-gradient-to-r from-web3-purple via-web3-blue to-web3-teal mx-auto flex items-center justify-center">
                           <Shield className="h-12 w-12 text-white" />
                         </div>
-                        <h4 className="text-xl font-bold mt-4 gradient-text-primary">AuraVerify</h4>
+                        <h4 className="text-xl font-bold mt-4 gradient-text-primary font-heading">BlockVerify</h4>
                         <p className="text-sm text-gray-400">Est. 2023</p>
                       </div>
                     </div>
@@ -210,10 +212,10 @@ const Index = () => {
           {/* Team Members Section */}
           <section id="team" className="mb-24 scroll-mt-24">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 gradient-text-primary">Our Team</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 font-heading bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Our Team</h2>
               <div className="h-1 w-24 bg-gradient-to-r from-web3-purple via-web3-blue to-web3-teal mx-auto rounded-full"></div>
               <p className="text-gray-300 mt-4 max-w-2xl mx-auto">
-                Meet the innovators behind AuraVerify who are passionate about creating a more secure and private digital identity ecosystem.
+                Meet the innovators behind BlockVerify who are passionate about creating a more secure and private digital identity ecosystem.
               </p>
             </div>
             
@@ -233,7 +235,7 @@ const Index = () => {
                       {index + 1}
                     </div>
                   </div>
-                  <h3 className="text-lg font-semibold mb-1">{member.name}</h3>
+                  <h3 className="text-lg font-semibold mb-1 font-heading">{member.name}</h3>
                   <p className="text-sm text-web3-purple mb-3">{member.role}</p>
                   <p className="text-sm text-gray-400">{member.bio}</p>
                 </GlassMorphismCard>
@@ -244,7 +246,7 @@ const Index = () => {
           {/* Mission and Vision Section */}
           <section id="mission" className="mb-24 scroll-mt-24">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 gradient-text-primary">Mission & Vision</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 font-heading bg-gradient-to-r from-teal-400 via-blue-400 to-purple-400 bg-clip-text text-transparent">Mission & Vision</h2>
               <div className="h-1 w-24 bg-gradient-to-r from-web3-purple via-web3-blue to-web3-teal mx-auto rounded-full"></div>
             </div>
             
@@ -253,7 +255,7 @@ const Index = () => {
                 <div className="h-16 w-16 rounded-xl bg-gradient-to-r from-web3-purple to-web3-blue flex items-center justify-center mb-6 mx-auto md:mx-0">
                   <Target className="h-8 w-8 text-white" />
                 </div>
-                <h3 className="text-2xl font-bold mb-4 text-center md:text-left gradient-text-primary">Our Mission</h3>
+                <h3 className="text-2xl font-bold mb-4 text-center md:text-left font-heading bg-gradient-to-r from-blue-300 to-purple-300 bg-clip-text text-transparent">Our Mission</h3>
                 <p className="text-gray-300 mb-4">
                   To empower individuals with self-sovereign digital identities that are secure, 
                   portable, and under their complete control.
@@ -269,7 +271,7 @@ const Index = () => {
                 <div className="h-16 w-16 rounded-xl bg-gradient-to-r from-web3-blue to-web3-teal flex items-center justify-center mb-6 mx-auto md:mx-0">
                   <Lightbulb className="h-8 w-8 text-white" />
                 </div>
-                <h3 className="text-2xl font-bold mb-4 text-center md:text-left gradient-text-primary">Our Vision</h3>
+                <h3 className="text-2xl font-bold mb-4 text-center md:text-left font-heading bg-gradient-to-r from-blue-300 to-teal-300 bg-clip-text text-transparent">Our Vision</h3>
                 <p className="text-gray-300 mb-4">
                   A future where digital identity is as trusted and portable as your physical ID, 
                   but with enhanced privacy protections and user control.
@@ -293,7 +295,7 @@ const Index = () => {
               <div className="h-8 w-8 rounded-full bg-gradient-to-r from-web3-purple via-web3-blue to-web3-teal flex items-center justify-center">
                 <Shield className="h-4 w-4 text-white" />
               </div>
-              <span className="text-sm text-gray-400">AuraVerify</span>
+              <span className="text-sm text-gray-400">BlockVerify</span>
             </div>
             
             <div className="flex items-center gap-6">
@@ -303,7 +305,7 @@ const Index = () => {
             </div>
             
             <div className="text-sm text-gray-500">
-              &copy; {new Date().getFullYear()} AuraVerify. All rights reserved.
+              &copy; {new Date().getFullYear()} BlockVerify. All rights reserved.
             </div>
           </div>
         </div>
