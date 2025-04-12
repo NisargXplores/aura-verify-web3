@@ -16,10 +16,14 @@ interface TransactionStatusProps {
 const TransactionStatus = ({
   status = "pending",
   autoChange = false,
-  txHash = "Gxd4SFNVh3KzVV1P9GgKLYqJMQH3NGU9QZ5KmU4yzqVTnLmRJRKJ",
+  txHash,
   message,
 }: TransactionStatusProps) => {
   const [currentStatus, setCurrentStatus] = useState<TransactionStatusType>(status);
+
+  useEffect(() => {
+    setCurrentStatus(status);
+  }, [status]);
 
   useEffect(() => {
     if (autoChange && currentStatus === "pending") {
@@ -83,7 +87,7 @@ const TransactionStatus = ({
             </div>
             <div className="mt-1">
               <p className="font-mono text-xs truncate">
-                {txHash.slice(0, 20)}...{txHash.slice(-8)}
+                {txHash}
               </p>
             </div>
           </div>

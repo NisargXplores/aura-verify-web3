@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Wallet } from "lucide-react";
+import { Wallet, RefreshCw } from "lucide-react";
 import AnimatedButton from "@/components/ui-elements/AnimatedButton";
 import { useWallet } from "@/context/WalletContext";
 import GlassMorphismCard from "@/components/ui-elements/GlassMorphismCard";
@@ -10,7 +10,25 @@ interface WalletConnectionUIProps {
 }
 
 const WalletConnectionUI = ({ minimal = false }: WalletConnectionUIProps) => {
-  const { connected, connecting, connectWallet, disconnectWallet, publicKey } = useWallet();
+  const { 
+    connected, 
+    connecting, 
+    connectWallet, 
+    disconnectWallet, 
+    publicKey, 
+    balance,
+    refreshBalance 
+  } = useWallet();
+  const [isRefreshing, setIsRefreshing] = React.useState(false);
+
+  const handleRefreshBalance = async () => {
+    setIsRefreshing(true);
+    try {
+      await refreshBalance();
+    } finally {
+      setIsRefreshing(false);
+    }
+  };
 
   if (minimal) {
     return (
@@ -74,6 +92,19 @@ const WalletConnectionUI = ({ minimal = false }: WalletConnectionUIProps) => {
             <div className="flex items-center justify-between mt-2">
               <span className="text-sm text-gray-400">Network</span>
               <span className="font-medium">Solana Mainnet</span>
+            </div>
+            <div className="flex items-center justify-between mt-2">
+              <span className="text-sm text-gray-400">Balance</span>
+              <div className="flex items-center gap-2">
+                <span className="font-medium">{balance !== null ? `${balance.toFixed(4)} SOL` : "Loading..."}</span>
+                <button 
+                  onClick={handleRefreshBalance} 
+                  disabled={isRefreshing}
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  <RefreshCw size={14} className={isRefreshing ? "animate-spin" : ""} />
+                </button>
+              </div>
             </div>
           </div>
           

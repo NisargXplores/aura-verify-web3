@@ -10,11 +10,13 @@ import BiometricScan from "@/components/identity/BiometricScan";
 import TransactionStatus from "@/components/transactions/TransactionStatus";
 import WalletConnectionUI from "@/components/wallet/WalletConnectionUI";
 import { useWallet } from "@/context/WalletContext";
+import TransactionConfirmation from "@/components/transactions/TransactionConfirmation";
 
 enum VerificationStep {
   CONNECT_WALLET,
   PERSONAL_INFO,
   BIOMETRIC_VERIFICATION,
+  MAKE_TRANSACTION,
   TRANSACTION_CONFIRMATION,
   COMPLETED,
 }
@@ -24,6 +26,7 @@ const VerifyIdentity = () => {
   const [currentStep, setCurrentStep] = useState<VerificationStep>(
     connected ? VerificationStep.PERSONAL_INFO : VerificationStep.CONNECT_WALLET
   );
+  const [transactionSignature, setTransactionSignature] = useState<string>("");
 
   // Update step when wallet connection changes
   React.useEffect(() => {
@@ -37,10 +40,15 @@ const VerifyIdentity = () => {
   };
 
   const handleBiometricComplete = () => {
+    setCurrentStep(VerificationStep.MAKE_TRANSACTION);
+  };
+
+  const handleMakeTransaction = () => {
     setCurrentStep(VerificationStep.TRANSACTION_CONFIRMATION);
   };
 
-  const handleTransactionComplete = () => {
+  const handleTransactionComplete = (signature: string) => {
+    setTransactionSignature(signature);
     setCurrentStep(VerificationStep.COMPLETED);
   };
 
@@ -54,22 +62,27 @@ const VerifyIdentity = () => {
       
       case VerificationStep.BIOMETRIC_VERIFICATION:
         return <BiometricScan onScanComplete={handleBiometricComplete} />;
+
+      case VerificationStep.MAKE_TRANSACTION:
+        return (
+          <GlassMorphismCard neonBorder className="w-full max-w-md mx-auto p-6 text-center">
+            <div className="w-20 h-20 mx-auto bg-gradient-to-r from-green-500/20 to-green-500/10 rounded-full flex items-center justify-center">
+              <ShieldCheck className="h-10 w-10 text-green-500" />
+            </div>
+            <h3 className="text-xl font-medium mt-6 mb-2">Biometric Verification Completed</h3>
+            <p className="text-gray-400 mb-6">
+              You've successfully verified your biometrics. Now proceed to create your identity attestation on the blockchain.
+            </p>
+            <AnimatedButton variant="neon" className="w-full" onClick={handleMakeTransaction}>
+              <span>Make Transaction</span>
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </AnimatedButton>
+          </GlassMorphismCard>
+        );
       
       case VerificationStep.TRANSACTION_CONFIRMATION:
         return (
-          <div className="space-y-6">
-            <TransactionStatus 
-              status="pending" 
-              autoChange 
-              message="Publishing your identity attestation to the blockchain" 
-              txHash="AuR8HMaNKXxUz8qFDWPyZMk8DhQcFYKAT6SLjohzNrUZ" 
-            />
-            <div className="text-center">
-              <p className="text-sm text-gray-400">
-                Please wait while we confirm your transaction
-              </p>
-            </div>
-          </div>
+          <TransactionConfirmation onTransactionComplete={handleTransactionComplete} />
         );
       
       case VerificationStep.COMPLETED:
@@ -82,6 +95,19 @@ const VerifyIdentity = () => {
             <p className="text-gray-400 mb-6">
               Your identity has been successfully verified and secured on the blockchain
             </p>
+            {transactionSignature && (
+              <div className="mb-6 bg-black/30 rounded-lg p-3 border border-web3-purple/20">
+                <p className="text-sm text-gray-400 mb-1">Transaction ID</p>
+                <a 
+                  href={`https://explorer.solana.com/tx/${transactionSignature}`} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-web3-blue hover:text-web3-blue/80 transition-colors text-xs break-all"
+                >
+                  {transactionSignature}
+                </a>
+              </div>
+            )}
             <Link to="/dashboard">
               <AnimatedButton variant="neon" className="w-full">
                 <span>Go to Dashboard</span>
@@ -124,6 +150,7 @@ const VerifyIdentity = () => {
                 { icon: <Wallet />, label: "Connect" },
                 { icon: <UserRound />, label: "Details" },
                 { icon: <Fingerprint />, label: "Biometrics" },
+                { icon: <CoinsIcon />, label: "Transaction" },
                 { icon: <CheckCircle />, label: "Confirm" },
               ].map((step, index) => (
                 <div key={index} className="flex flex-col items-center">
@@ -175,6 +202,6 @@ const VerifyIdentity = () => {
 };
 
 // To properly import the icons used in the steps
-import { Wallet, UserRound, CheckCircle, Shield } from "lucide-react";
+import { Wallet, UserRound, CheckCircle, Shield, CoinsIcon } from "lucide-react";
 
 export default VerifyIdentity;

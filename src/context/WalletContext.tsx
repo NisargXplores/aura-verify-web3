@@ -1,14 +1,17 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { toast } from "sonner";
+import { Connection } from "@solana/web3.js";
 
 interface WalletContextType {
   connected: boolean;
   connecting: boolean;
   wallet: any | null;
   publicKey: string | null;
+  balance: number | null;
   connectWallet: () => Promise<void>;
   disconnectWallet: () => void;
+  refreshBalance: () => Promise<void>;
 }
 
 const WalletContext = createContext<WalletContextType>({
@@ -16,8 +19,10 @@ const WalletContext = createContext<WalletContextType>({
   connecting: false,
   wallet: null,
   publicKey: null,
+  balance: null,
   connectWallet: async () => {},
   disconnectWallet: () => {},
+  refreshBalance: async () => {},
 });
 
 export const useWallet = () => useContext(WalletContext);
@@ -31,6 +36,10 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
   const [connecting, setConnecting] = useState<boolean>(false);
   const [wallet, setWallet] = useState<any | null>(null);
   const [publicKey, setPublicKey] = useState<string | null>(null);
+  const [balance, setBalance] = useState<number | null>(null);
+
+  // Create a Solana connection
+  const connection = new Connection("https://api.mainnet-beta.solana.com", "confirmed");
 
   // Function to check if Phantom wallet is installed
   const getPhantomWallet = () => {
@@ -42,6 +51,18 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
       }
     }
     return null;
+  };
+
+  // Function to refresh balance
+  const refreshBalance = async () => {
+    if (connected && publicKey) {
+      try {
+        const balanceInLamports = await connection.getBalance(new PublicKey(publicKey));
+        setBalance(balanceInLamports / 1000000000); // Convert lamports to SOL
+      } catch (error) {
+        console.error("Failed to fetch balance:", error);
+      }
+    }
   };
 
   // Function to connect to Phantom wallet
@@ -70,6 +91,10 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
           description: `Connected to ${publicKey.slice(0, 4)}...${publicKey.slice(-4)}`,
         });
         
+        // Fetch initial balance
+        const balanceInLamports = await connection.getBalance(response.publicKey);
+        setBalance(balanceInLamports / 1000000000); // Convert lamports to SOL
+        
         // Save connection state
         localStorage.setItem("walletConnected", "true");
       } catch (error) {
@@ -90,6 +115,7 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
     }
     setWallet(null);
     setPublicKey(null);
+    setBalance(null);
     setConnected(false);
     localStorage.removeItem("walletConnected");
     toast.info("Wallet disconnected");
@@ -107,6 +133,26 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
     checkConnectionStatus();
   }, []);
 
+  // Monitor for account changes
+  useEffect(() => {
+    const handleAccountChange = () => {
+      if (connected) {
+        refreshBalance();
+      }
+    };
+
+    // Set up listeners for wallet events
+    if (connected && wallet) {
+      wallet.on('accountChanged', handleAccountChange);
+    }
+
+    return () => {
+      if (wallet) {
+        wallet.off('accountChanged', handleAccountChange);
+      }
+    };
+  }, [connected, wallet]);
+
   return (
     <WalletContext.Provider
       value={{
@@ -114,8 +160,10 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
         connecting,
         wallet,
         publicKey,
+        balance,
         connectWallet,
         disconnectWallet,
+        refreshBalance,
       }}
     >
       {children}
