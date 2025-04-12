@@ -36,7 +36,7 @@ const Navbar = () => {
                 <div className="absolute -inset-0.5 rounded-full bg-gradient-to-r from-web3-purple via-web3-blue to-web3-teal opacity-30 blur-sm animate-pulse-glow"></div>
               </div>
               <div className="flex flex-col">
-                <h1 className="text-xl font-bold gradient-text-primary tracking-tight font-heading">BlockVerify</h1>
+                <h1 className="text-xl font-bold gradient-text-primary tracking-tight font-heading">AuraChain</h1>
                 <p className="text-xs text-gray-400">Blockchain Identity Verification</p>
               </div>
             </Link>

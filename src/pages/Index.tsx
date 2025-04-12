@@ -152,7 +152,7 @@ const Index = () => {
           {/* About Us Section */}
           <section id="about" className="mb-24 scroll-mt-24">
             <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold mb-4 font-heading bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">About BlockVerify</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-4 font-heading bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 bg-clip-text text-transparent">About AuraChain</h2>
               <div className="h-1 w-24 bg-gradient-to-r from-web3-purple via-web3-blue to-web3-teal mx-auto rounded-full"></div>
             </div>
             
@@ -161,7 +161,7 @@ const Index = () => {
                 <div className="order-2 md:order-1">
                   <h3 className="text-2xl font-bold mb-4 font-heading text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-white">Redefining Digital Identity</h3>
                   <p className="text-gray-300 mb-4">
-                    Founded in 2023, BlockVerify is pioneering a new approach to digital identity verification 
+                    Founded in 2023, AuraChain is pioneering a new approach to digital identity verification 
                     using blockchain technology. We believe that individuals should have complete control over 
                     their personal data while still being able to prove their identity securely.
                   </p>
@@ -198,7 +198,7 @@ const Index = () => {
                         <div className="h-24 w-24 rounded-full bg-gradient-to-r from-web3-purple via-web3-blue to-web3-teal mx-auto flex items-center justify-center">
                           <Shield className="h-12 w-12 text-white" />
                         </div>
-                        <h4 className="text-xl font-bold mt-4 gradient-text-primary font-heading">BlockVerify</h4>
+                        <h4 className="text-xl font-bold mt-4 gradient-text-primary font-heading">AuraChain</h4>
                         <p className="text-sm text-gray-400">Est. 2023</p>
                       </div>
                     </div>
@@ -215,7 +215,7 @@ const Index = () => {
               <h2 className="text-3xl md:text-4xl font-bold mb-4 font-heading bg-gradient-to-r from-indigo-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">Our Team</h2>
               <div className="h-1 w-24 bg-gradient-to-r from-web3-purple via-web3-blue to-web3-teal mx-auto rounded-full"></div>
               <p className="text-gray-300 mt-4 max-w-2xl mx-auto">
-                Meet the innovators behind BlockVerify who are passionate about creating a more secure and private digital identity ecosystem.
+                Meet the innovators behind AuraChain who are passionate about creating a more secure and private digital identity ecosystem.
               </p>
             </div>
             
@@ -295,7 +295,7 @@ const Index = () => {
               <div className="h-8 w-8 rounded-full bg-gradient-to-r from-web3-purple via-web3-blue to-web3-teal flex items-center justify-center">
                 <Shield className="h-4 w-4 text-white" />
               </div>
-              <span className="text-sm text-gray-400">BlockVerify</span>
+              <span className="text-sm text-gray-400">AuraChain</span>
             </div>
             
             <div className="flex items-center gap-6">
@@ -305,7 +305,7 @@ const Index = () => {
             </div>
             
             <div className="text-sm text-gray-500">
-              &copy; {new Date().getFullYear()} BlockVerify. All rights reserved.
+              &copy; {new Date().getFullYear()} AuraChain. All rights reserved.
             </div>
           </div>
         </div>

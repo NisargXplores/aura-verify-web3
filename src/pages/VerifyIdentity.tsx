@@ -99,7 +99,8 @@ const VerifyIdentity = () => {
               <div className="mb-6 bg-black/30 rounded-lg p-3 border border-web3-purple/20">
                 <p className="text-sm text-gray-400 mb-1">Transaction ID</p>
                 <a 
-                  href={`https://explorer.solana.com/tx/${transactionSignature}`} 
+                  href={`https://explorer.solana.com/tx/${transactionSignature}?cluster=devnet`}
+ 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="text-web3-blue hover:text-web3-blue/80 transition-colors text-xs break-all"
