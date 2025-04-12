@@ -7,9 +7,9 @@ import {
   Connection 
 } from '@solana/web3.js';
 
-// Solana connection to mainnet beta
+// Solana connection to devnet for better accessibility in development
 const connection = new Connection(
-  "https://api.mainnet-beta.solana.com",
+  "https://api.devnet.solana.com",
   "confirmed"
 );
 
@@ -31,8 +31,10 @@ export const transferSOL = async (
       throw new Error("Wallet not connected");
     }
 
+    console.log("Getting recent blockhash...");
     // Get recent blockhash
     const blockhash = await connection.getRecentBlockhash();
+    console.log("Blockhash received:", blockhash.blockhash);
     
     // Create transaction
     const transaction = new Transaction().add(
@@ -47,16 +49,20 @@ export const transferSOL = async (
     transaction.feePayer = wallet.publicKey;
     transaction.recentBlockhash = blockhash.blockhash;
     
+    console.log("Requesting transaction signature...");
     // Request transaction signature from the wallet
     const signedTransaction = await wallet.signTransaction(transaction);
     
+    console.log("Sending transaction to network...");
     // Send the signed transaction to the network
     const signature = await connection.sendRawTransaction(
       signedTransaction.serialize()
     );
     
+    console.log("Transaction sent, waiting for confirmation...");
     // Wait for confirmation
     await connection.confirmTransaction(signature);
+    console.log("Transaction confirmed with signature:", signature);
     
     return signature;
   } catch (error) {

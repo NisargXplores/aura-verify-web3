@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { toast } from "sonner";
 import { Connection, PublicKey } from "@solana/web3.js";
@@ -37,7 +38,8 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
   const [publicKey, setPublicKey] = useState<string | null>(null);
   const [balance, setBalance] = useState<number | null>(null);
 
-  const connection = new Connection("https://api.mainnet-beta.solana.com", "confirmed");
+  // Using devnet instead of mainnet for better accessibility during development
+  const connection = new Connection("https://api.devnet.solana.com", "confirmed");
 
   const getPhantomWallet = () => {
     if (typeof window !== "undefined") {
