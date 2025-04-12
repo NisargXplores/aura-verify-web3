@@ -13,28 +13,28 @@ const Header = () => {
         <div className="flex items-center">
           <div className="flex items-center gap-2">
             <div className="relative">
-              <div className="h-10 w-10 rounded-full bg-gradient-to-r from-web3-purple via-web3-blue to-web3-teal flex items-center justify-center">
+              {/* <div className="h-10 w-10 rounded-full bg-gradient-to-r from-web3-purple via-web3-blue to-web3-teal flex items-center justify-center">
                 <CheckCircle className="h-5 w-5 text-white" />
-              </div>
-              <div className="absolute -inset-0.5 rounded-full bg-gradient-to-r from-web3-purple via-web3-blue to-web3-teal opacity-30 blur-sm animate-pulse-glow"></div>
+              </div> */}
+              {/* <div className="absolute -inset-0.5 rounded-full bg-gradient-to-r from-web3-purple via-web3-blue to-web3-teal opacity-30 blur-sm animate-pulse-glow"></div> */}
             </div>
-            <div className="flex flex-col">
+            {/* <div className="flex flex-col">
               <h1 className="text-xl font-bold gradient-text-primary tracking-tight font-heading">BlockVerify</h1>
               <p className="text-xs text-gray-400">Blockchain Identity Verification</p>
-            </div>
+            </div> */}
           </div>
         </div>
         
         <div className="flex items-center gap-4">
-          <a 
+          {/* <a 
             href="#" 
             className="hidden md:flex items-center gap-1 text-sm text-gray-400 hover:text-white transition-colors"
           >
             <Info className="h-4 w-4" />
             <span>About</span>
-          </a>
+          </a> */}
           
-          <WalletConnectionUI minimal />
+          {/* <WalletConnectionUI minimal /> */}
         </div>
       </div>
     </header>
