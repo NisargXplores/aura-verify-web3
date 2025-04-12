@@ -1,7 +1,6 @@
-
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { toast } from "sonner";
-import { Connection } from "@solana/web3.js";
+import { Connection, PublicKey } from "@solana/web3.js";
 
 interface WalletContextType {
   connected: boolean;
@@ -38,10 +37,8 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
   const [publicKey, setPublicKey] = useState<string | null>(null);
   const [balance, setBalance] = useState<number | null>(null);
 
-  // Create a Solana connection
   const connection = new Connection("https://api.mainnet-beta.solana.com", "confirmed");
 
-  // Function to check if Phantom wallet is installed
   const getPhantomWallet = () => {
     if (typeof window !== "undefined") {
       // @ts-ignore
@@ -53,7 +50,6 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
     return null;
   };
 
-  // Function to refresh balance
   const refreshBalance = async () => {
     if (connected && publicKey) {
       try {
@@ -65,7 +61,6 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
     }
   };
 
-  // Function to connect to Phantom wallet
   const connectWallet = async () => {
     try {
       setConnecting(true);
@@ -91,11 +86,9 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
           description: `Connected to ${publicKey.slice(0, 4)}...${publicKey.slice(-4)}`,
         });
         
-        // Fetch initial balance
         const balanceInLamports = await connection.getBalance(response.publicKey);
         setBalance(balanceInLamports / 1000000000); // Convert lamports to SOL
         
-        // Save connection state
         localStorage.setItem("walletConnected", "true");
       } catch (error) {
         console.error("Connection error:", error);
@@ -108,7 +101,6 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
     }
   };
 
-  // Function to disconnect wallet
   const disconnectWallet = () => {
     if (wallet) {
       wallet.disconnect();
@@ -121,7 +113,6 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
     toast.info("Wallet disconnected");
   };
 
-  // Auto-connect wallet if previously connected
   useEffect(() => {
     const checkConnectionStatus = async () => {
       const wasConnected = localStorage.getItem("walletConnected") === "true";
@@ -133,7 +124,6 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
     checkConnectionStatus();
   }, []);
 
-  // Monitor for account changes
   useEffect(() => {
     const handleAccountChange = () => {
       if (connected) {
@@ -141,7 +131,6 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
       }
     };
 
-    // Set up listeners for wallet events
     if (connected && wallet) {
       wallet.on('accountChanged', handleAccountChange);
     }
