@@ -9,7 +9,51 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      identity_verifications: {
+        Row: {
+          biometric_verified: boolean | null
+          created_at: string | null
+          date_of_birth: string
+          email: string
+          full_name: string
+          id: string
+          id_number: string
+          transaction_signature: string | null
+          updated_at: string | null
+          user_id: string
+          verification_status: string
+          wallet_address: string | null
+        }
+        Insert: {
+          biometric_verified?: boolean | null
+          created_at?: string | null
+          date_of_birth: string
+          email: string
+          full_name: string
+          id?: string
+          id_number: string
+          transaction_signature?: string | null
+          updated_at?: string | null
+          user_id: string
+          verification_status?: string
+          wallet_address?: string | null
+        }
+        Update: {
+          biometric_verified?: boolean | null
+          created_at?: string | null
+          date_of_birth?: string
+          email?: string
+          full_name?: string
+          id?: string
+          id_number?: string
+          transaction_signature?: string | null
+          updated_at?: string | null
+          user_id?: string
+          verification_status?: string
+          wallet_address?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

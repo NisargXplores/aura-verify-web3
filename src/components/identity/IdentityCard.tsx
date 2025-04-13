@@ -1,25 +1,76 @@
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import GlassMorphismCard from "@/components/ui-elements/GlassMorphismCard";
 import StatusIndicator from "@/components/ui-elements/StatusIndicator";
 import { format } from "date-fns";
 import { useWallet } from "@/context/WalletContext";
-
-interface UserIdentity {
-  fullName: string;
-  email: string;
-  dateOfBirth: Date;
-  idNumber: string;
-  verificationStatus: "verified" | "not-verified" | "pending";
-  verifiedDate?: Date;
-}
+import { supabase } from "@/integrations/supabase/client";
 
 interface IdentityCardProps {
-  identity: UserIdentity;
+  txSignature?: string;
 }
 
-const IdentityCard = ({ identity }: IdentityCardProps) => {
+const IdentityCard = ({ txSignature }: IdentityCardProps) => {
   const { publicKey } = useWallet();
+  const [identityData, setIdentityData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  
+  useEffect(() => {
+    const fetchIdentityData = async () => {
+      setLoading(true);
+      try {
+        const userId = await supabase.auth.getUser().then(res => res.data.user?.id);
+        if (!userId) {
+          setLoading(false);
+          return;
+        }
+        
+        const { data, error } = await supabase
+          .from('identity_verifications')
+          .select('*')
+          .eq('user_id', userId)
+          .order('created_at', { ascending: false })
+          .limit(1)
+          .single();
+          
+        if (error && error.code !== 'PGRST116') {
+          console.error("Error fetching identity data:", error);
+          setLoading(false);
+          return;
+        }
+        
+        if (data) {
+          setIdentityData(data);
+        }
+      } catch (error) {
+        console.error("Error in fetchIdentityData:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchIdentityData();
+  }, [txSignature]);
+  
+  if (loading) {
+    return (
+      <GlassMorphismCard className="w-full max-w-md mx-auto p-6">
+        <div className="flex justify-center py-8">
+          <div className="animate-spin h-8 w-8 border-4 border-web3-purple/20 border-t-web3-purple rounded-full"></div>
+        </div>
+      </GlassMorphismCard>
+    );
+  }
+  
+  if (!identityData) {
+    return (
+      <GlassMorphismCard className="w-full max-w-md mx-auto p-6">
+        <div className="text-center py-8">
+          <p className="text-gray-400">No identity data found</p>
+        </div>
+      </GlassMorphismCard>
+    );
+  }
   
   return (
     <GlassMorphismCard
@@ -27,7 +78,7 @@ const IdentityCard = ({ identity }: IdentityCardProps) => {
       className="w-full max-w-md mx-auto relative overflow-hidden hologram-effect py-6"
     >
       <div className="absolute top-3 right-3">
-        <StatusIndicator status={identity.verificationStatus} />
+        <StatusIndicator status={identityData.verification_status} />
       </div>
       
       <div className="text-center mb-6">
@@ -37,22 +88,22 @@ const IdentityCard = ({ identity }: IdentityCardProps) => {
       <div className="space-y-4 px-2">
         <div className="flex items-center justify-between border-b border-white/10 pb-2">
           <span className="text-sm text-gray-400">Full Name</span>
-          <span className="font-medium">{identity.fullName}</span>
+          <span className="font-medium">{identityData.full_name}</span>
         </div>
         
         <div className="flex items-center justify-between border-b border-white/10 pb-2">
           <span className="text-sm text-gray-400">Email</span>
-          <span className="font-medium">{identity.email}</span>
+          <span className="font-medium">{identityData.email}</span>
         </div>
         
         <div className="flex items-center justify-between border-b border-white/10 pb-2">
           <span className="text-sm text-gray-400">Date of Birth</span>
-          <span className="font-medium">{format(identity.dateOfBirth, "PP")}</span>
+          <span className="font-medium">{new Date(identityData.date_of_birth).toLocaleDateString()}</span>
         </div>
         
         <div className="flex items-center justify-between border-b border-white/10 pb-2">
           <span className="text-sm text-gray-400">ID Number</span>
-          <span className="font-medium">{identity.idNumber}</span>
+          <span className="font-medium">{identityData.id_number}</span>
         </div>
         
         <div className="flex items-center justify-between border-b border-white/10 pb-2">
@@ -62,10 +113,10 @@ const IdentityCard = ({ identity }: IdentityCardProps) => {
           </span>
         </div>
         
-        {identity.verificationStatus === "verified" && identity.verifiedDate && (
+        {identityData.verification_status === "verified" && identityData.transaction_signature && (
           <div className="flex items-center justify-between pb-2">
             <span className="text-sm text-gray-400">Verified On</span>
-            <span className="font-medium">{format(identity.verifiedDate, "PPp")}</span>
+            <span className="font-medium">{new Date(identityData.updated_at).toLocaleDateString()}</span>
           </div>
         )}
       </div>
@@ -75,7 +126,7 @@ const IdentityCard = ({ identity }: IdentityCardProps) => {
       
       <div className="mt-6 text-center">
         <div className="inline-block px-3 py-1 bg-black/30 rounded-full text-xs text-gray-400 border border-white/5">
-          Secured with Web3 Identity Protocol
+          Secured with AuraChain Identity Protocol
         </div>
       </div>
     </GlassMorphismCard>

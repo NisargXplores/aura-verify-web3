@@ -8,6 +8,7 @@ import GlassMorphismCard from "@/components/ui-elements/GlassMorphismCard";
 import AnimatedButton from "@/components/ui-elements/AnimatedButton";
 import TransactionStatus from "@/components/transactions/TransactionStatus";
 import { transferSOL } from "@/utils/transactionUtils";
+import { supabase } from "@/integrations/supabase/client";
 
 interface TransactionConfirmationProps {
   onTransactionComplete: (signature: string) => void;
@@ -46,6 +47,26 @@ const TransactionConfirmation: React.FC<TransactionConfirmationProps> = ({
       
       setSignature(txSignature);
       setTransactionStatus("success");
+      
+      // Update the verification record with the transaction signature
+      const userId = await supabase.auth.getUser().then(res => res.data.user?.id);
+      if (userId) {
+        const { error } = await supabase
+          .from('identity_verifications')
+          .update({ 
+            transaction_signature: txSignature,
+            verification_status: 'verified',
+            updated_at: new Date().toISOString()
+          })
+          .eq('user_id', userId)
+          .order('created_at', { ascending: false })
+          .limit(1);
+          
+        if (error) {
+          console.error("Error updating verification record:", error);
+        }
+      }
+      
       toast.success("Transaction completed successfully!");
       
       // Wait 3 seconds before proceeding to the next step
@@ -120,7 +141,7 @@ const TransactionConfirmation: React.FC<TransactionConfirmationProps> = ({
             onClick={handleInitiateTransaction}
             isLoading={isLoading}
           >
-            <Shield className="mr-2 h-5 w-5" />
+            <Shield className="h-5 w-5 mr-2" />
             Create Attestation
           </AnimatedButton>
           

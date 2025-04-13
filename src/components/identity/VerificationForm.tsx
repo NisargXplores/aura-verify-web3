@@ -18,6 +18,7 @@ import {
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import { useWallet } from "@/context/WalletContext";
+import { supabase } from "@/integrations/supabase/client";
 
 const formSchema = z.object({
   fullName: z.string().min(2, "Full name is required"),
@@ -62,21 +63,38 @@ const VerificationForm = ({ onSubmitSuccess }: VerificationFormProps) => {
     }
 
     setIsSubmitting(true);
-    // Simulate API call
+    
     try {
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      // Save verification data to Supabase
+      const { error } = await supabase
+        .from('identity_verifications')
+        .insert({
+          user_id: await supabase.auth.getUser().then(res => res.data.user?.id),
+          full_name: data.fullName,
+          email: data.email,
+          date_of_birth: data.dateOfBirth.toISOString().split('T')[0],
+          id_number: data.idNumber,
+          wallet_address: publicKey,
+          verification_status: 'pending'
+        });
+
+      if (error) {
+        console.error("Error saving verification data:", error);
+        throw new Error(error.message);
+      }
       
       toast.success("Verification submitted successfully", {
         description: "Your identity verification request has been submitted",
       });
       
-      console.log("Verification data:", {
+      console.log("Verification data saved:", {
         ...data,
         walletAddress: publicKey,
       });
       
       onSubmitSuccess();
     } catch (error) {
+      console.error("Submission error:", error);
       toast.error("Failed to submit verification", {
         description: "Please try again later",
       });

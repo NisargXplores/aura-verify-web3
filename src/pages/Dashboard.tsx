@@ -19,14 +19,41 @@ import GlassMorphismCard from "@/components/ui-elements/GlassMorphismCard";
 import AnimatedButton from "@/components/ui-elements/AnimatedButton";
 import { toast } from "sonner";
 import { useWallet } from "@/context/WalletContext";
+import { supabase } from "@/integrations/supabase/client";
 
 const Dashboard = () => {
   const { connected, publicKey, balance, connectWallet, refreshBalance } = useWallet();
   const [isLoading, setIsLoading] = useState(false);
   const [recentTransactions, setRecentTransactions] = useState<any[]>([]);
   const [transactionsLoading, setTransactionsLoading] = useState(false);
+  const [verificationData, setVerificationData] = useState<any>(null);
 
   const connection = new Connection("https://api.devnet.solana.com", "confirmed");
+
+  // Fetch verification data from Supabase
+  const fetchVerificationData = async () => {
+    if (!connected) return;
+    
+    try {
+      const { data, error } = await supabase
+        .from('identity_verifications')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(1)
+        .single();
+        
+      if (error && error.code !== 'PGRST116') {
+        console.error("Error fetching verification data:", error);
+        return;
+      }
+      
+      if (data) {
+        setVerificationData(data);
+      }
+    } catch (error) {
+      console.error("Error in fetchVerificationData:", error);
+    }
+  };
 
   // Fetch recent transactions
   const fetchRecentTransactions = async () => {
@@ -51,7 +78,7 @@ const Dashboard = () => {
               amount: tx?.meta?.postBalances && tx?.meta?.preBalances 
                 ? Math.abs((tx.meta.postBalances[0] - tx.meta.preBalances[0]) / LAMPORTS_PER_SOL).toFixed(4)
                 : 'Unknown',
-              type: tx?.transaction?.message?.instructions?.[0]?.programId === 'system' ? 'Transfer' : 'Other'
+              type: tx?.transaction?.message?.instructions?.[0]?.programId.toString() === 'system' ? 'Transfer' : 'Other'
             };
           } catch (err) {
             console.error('Error fetching transaction:', err);
@@ -75,6 +102,7 @@ const Dashboard = () => {
     try {
       await refreshBalance();
       await fetchRecentTransactions();
+      await fetchVerificationData();
       toast.success("Wallet data refreshed");
     } catch (error) {
       console.error("Error refreshing wallet data:", error);
@@ -88,6 +116,7 @@ const Dashboard = () => {
   useEffect(() => {
     if (connected && publicKey) {
       fetchRecentTransactions();
+      fetchVerificationData();
     }
   }, [connected, publicKey]);
 
@@ -157,6 +186,48 @@ const Dashboard = () => {
                   </div>
                 </div>
               </GlassMorphismCard>
+
+              {connected && verificationData && (
+                <GlassMorphismCard className="p-6">
+                  <h2 className="text-xl font-medium mb-4">Verification Status</h2>
+                  <div className="bg-black/30 rounded-lg p-4 border border-web3-purple/20">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <p className="text-sm text-gray-400">Name: <span className="text-white">{verificationData.full_name}</span></p>
+                        <p className="text-sm text-gray-400">Email: <span className="text-white">{verificationData.email}</span></p>
+                        <p className="text-sm text-gray-400">ID Number: <span className="text-white">{verificationData.id_number}</span></p>
+                      </div>
+                      <div>
+                        <p className="text-sm text-gray-400">Status: 
+                          <span className={`ml-1 ${
+                            verificationData.verification_status === 'verified' ? 'text-green-400' : 
+                            verificationData.verification_status === 'pending' ? 'text-amber-400' : 'text-red-400'
+                          }`}>
+                            {verificationData.verification_status.charAt(0).toUpperCase() + verificationData.verification_status.slice(1)}
+                          </span>
+                        </p>
+                        <p className="text-sm text-gray-400">Biometric: 
+                          <span className={`ml-1 ${verificationData.biometric_verified ? 'text-green-400' : 'text-gray-400'}`}>
+                            {verificationData.biometric_verified ? 'Verified' : 'Not Verified'}
+                          </span>
+                        </p>
+                        {verificationData.transaction_signature && (
+                          <p className="text-sm text-gray-400">Blockchain Attestation: 
+                            <a 
+                              href={`https://explorer.solana.com/tx/${verificationData.transaction_signature}?cluster=devnet`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="ml-1 text-web3-purple hover:underline"
+                            >
+                              View on Explorer
+                            </a>
+                          </p>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </GlassMorphismCard>
+              )}
 
               {connected && (
                 <GlassMorphismCard className="p-6">
