@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import GlassMorphismCard from "@/components/ui-elements/GlassMorphismCard";
 import StatusIndicator from "@/components/ui-elements/StatusIndicator";
-import { format } from "date-fns";
 import { useWallet } from "@/context/WalletContext";
 import { supabase } from "@/integrations/supabase/client";
 
@@ -19,18 +18,18 @@ const IdentityCard = ({ txSignature }: IdentityCardProps) => {
     const fetchIdentityData = async () => {
       setLoading(true);
       try {
-        // Get the current user session
-        const { data: authData } = await supabase.auth.getSession();
-        if (!authData.session) {
-          console.log("No authenticated session found");
+        // Get the user ID from localStorage - this was saved during form submission
+        const userId = localStorage.getItem("verification_user_id");
+        
+        if (!userId) {
+          console.log("No user ID found in localStorage");
           setLoading(false);
           return;
         }
         
-        const userId = authData.session.user.id;
-        console.log("Fetching identity data for user:", userId);
+        console.log("Fetching identity data for user ID:", userId);
         
-        // Try to fetch data
+        // Try to fetch data using the stored user ID
         const { data, error } = await supabase
           .from('identity_verifications')
           .select('*')

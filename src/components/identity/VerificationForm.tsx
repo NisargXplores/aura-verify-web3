@@ -65,32 +65,13 @@ const VerificationForm = ({ onSubmitSuccess }: VerificationFormProps) => {
     setIsSubmitting(true);
     
     try {
-      // First, ensure user is authenticated with Supabase
-      const { data: authData } = await supabase.auth.getSession();
+      // Skip the authentication step for now - we'll use a direct insert with a generated ID
+      // This avoids issues with Supabase email validation for demo purposes
       
-      if (!authData.session) {
-        // If not authenticated, sign up with a random email/password
-        // This is a workaround for demo purposes - in a real app, use proper auth
-        const randomEmail = `user_${Math.random().toString(36).substring(2)}@aurachain.example`;
-        const randomPassword = Math.random().toString(36).substring(2);
-        
-        const { error: signUpError } = await supabase.auth.signUp({
-          email: randomEmail,
-          password: randomPassword,
-        });
-        
-        if (signUpError) {
-          console.error("Error signing up:", signUpError);
-          throw new Error("Authentication failed");
-        }
-      }
+      // Generate a UUID for the user - in a real app this would come from auth
+      const userId = crypto.randomUUID();
       
-      // Get the user ID after ensuring authentication
-      const userId = (await supabase.auth.getUser()).data.user?.id;
-      
-      if (!userId) {
-        throw new Error("Failed to get user ID");
-      }
+      console.log("Using generated user ID:", userId);
       
       // Save verification data to Supabase
       const { error } = await supabase
@@ -102,7 +83,8 @@ const VerificationForm = ({ onSubmitSuccess }: VerificationFormProps) => {
           date_of_birth: data.dateOfBirth.toISOString().split('T')[0],
           id_number: data.idNumber,
           wallet_address: publicKey,
-          verification_status: 'pending'
+          verification_status: 'pending',
+          biometric_verified: false
         });
 
       if (error) {
@@ -115,9 +97,13 @@ const VerificationForm = ({ onSubmitSuccess }: VerificationFormProps) => {
       });
       
       console.log("Verification data saved:", {
+        userId,
         ...data,
         walletAddress: publicKey,
       });
+      
+      // Store the userId in localStorage for later retrieval
+      localStorage.setItem("verification_user_id", userId);
       
       onSubmitSuccess();
     } catch (error) {

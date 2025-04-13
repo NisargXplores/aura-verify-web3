@@ -49,18 +49,18 @@ const TransactionConfirmation: React.FC<TransactionConfirmationProps> = ({
       setTransactionStatus("success");
       
       // Update the verification record with the transaction signature
-      const userId = await supabase.auth.getUser().then(res => res.data.user?.id);
+      const userId = localStorage.getItem("verification_user_id");
+      
       if (userId) {
         const { error } = await supabase
           .from('identity_verifications')
           .update({ 
             transaction_signature: txSignature,
             verification_status: 'verified',
+            biometric_verified: true,
             updated_at: new Date().toISOString()
           })
-          .eq('user_id', userId)
-          .order('created_at', { ascending: false })
-          .limit(1);
+          .eq('user_id', userId);
           
         if (error) {
           console.error("Error updating verification record:", error);

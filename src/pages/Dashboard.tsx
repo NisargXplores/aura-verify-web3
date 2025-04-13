@@ -1,18 +1,7 @@
 
 import React, { useState, useEffect } from "react";
-
-// Extend the Window interface to include the solana property
-declare global {
-  interface Window {
-    solana?: {
-      isPhantom: boolean;
-      connect: (options?: { onlyIfTrusted: boolean }) => Promise<{ publicKey: { toString: () => string } }>;
-      publicKey?: { toString: () => string };
-    };
-  }
-}
 import { Link } from "react-router-dom";
-import { Connection, PublicKey, ParsedTransactionWithMeta, LAMPORTS_PER_SOL } from "@solana/web3.js";
+import { Connection, PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
 import { ArrowLeft, RefreshCw, AlertCircle, CheckCircle, Shield, Github, Twitter, Linkedin } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import GlassMorphismCard from "@/components/ui-elements/GlassMorphismCard";
@@ -35,14 +24,23 @@ const Dashboard = () => {
     if (!connected) return;
     
     try {
+      // Get the user ID from localStorage
+      const userId = localStorage.getItem("verification_user_id");
+      
+      if (!userId) {
+        console.log("No user ID found in localStorage");
+        return;
+      }
+      
       const { data, error } = await supabase
         .from('identity_verifications')
         .select('*')
+        .eq('user_id', userId)
         .order('created_at', { ascending: false })
         .limit(1)
-        .single();
+        .maybeSingle();
         
-      if (error && error.code !== 'PGRST116') {
+      if (error) {
         console.error("Error fetching verification data:", error);
         return;
       }
