@@ -13,7 +13,7 @@ declare global {
 }
 import { Link } from "react-router-dom";
 import { Connection, PublicKey, ParsedTransactionWithMeta, LAMPORTS_PER_SOL } from "@solana/web3.js";
-import { ArrowLeft, RefreshCw, AlertCircle, CheckCircle } from "lucide-react";
+import { ArrowLeft, RefreshCw, AlertCircle, CheckCircle, Shield, Github, Twitter, Linkedin } from "lucide-react";
 import Navbar from "@/components/layout/Navbar";
 import GlassMorphismCard from "@/components/ui-elements/GlassMorphismCard";
 import AnimatedButton from "@/components/ui-elements/AnimatedButton";
@@ -51,7 +51,7 @@ const Dashboard = () => {
               amount: tx?.meta?.postBalances && tx?.meta?.preBalances 
                 ? Math.abs((tx.meta.postBalances[0] - tx.meta.preBalances[0]) / LAMPORTS_PER_SOL).toFixed(4)
                 : 'Unknown',
-              type: tx?.transaction?.message?.instructions?.[0]?.program === 'system' ? 'Transfer' : 'Other'
+              type: tx?.transaction?.message?.instructions?.[0]?.programId === 'system' ? 'Transfer' : 'Other'
             };
           } catch (err) {
             console.error('Error fetching transaction:', err);
@@ -230,7 +230,7 @@ const Dashboard = () => {
                 <Shield className="h-4 w-4 text-white" />
               </div>
               <div className="flex flex-col">
-                <span className="text-sm text-white/70">BlockVerify © 2025</span>
+                <span className="text-sm text-white/70">AuraChain © 2025</span>
                 <p className="text-xs text-white/50">Securing identities on the blockchain, one verification at a time</p>
               </div>
             </div>
