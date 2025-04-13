@@ -53,7 +53,7 @@ const AboutUs = () => {
               <div className="absolute -inset-0.5 rounded-full bg-gradient-to-r from-web3-purple via-web3-blue to-web3-teal opacity-30 blur-sm animate-pulse-glow"></div>
             </div>
             <div className="flex flex-col">
-              <h1 className="text-xl font-bold gradient-text-primary tracking-tight font-heading">BlockVerify</h1>
+              <h1 className="text-xl font-bold gradient-text-primary tracking-tight font-heading">AuraChain</h1>
               <p className="text-xs text-gray-400">Blockchain Identity Verification</p>
             </div>
           </div>
@@ -73,7 +73,7 @@ const AboutUs = () => {
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-12">
             <h1 className="text-4xl md:text-5xl font-bold mb-6 font-heading bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-              About BlockVerify
+              About AuraChain
             </h1>
             <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto">
               Our mission is to revolutionize digital identity verification using blockchain technology.
@@ -86,7 +86,7 @@ const AboutUs = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div>
                   <p className="text-gray-300 mb-4">
-                    BlockVerify was founded in 2025 with a vision to solve the growing challenges of digital identity verification in an increasingly decentralized world. Our team of blockchain enthusiasts and security experts came together to build a platform that puts users in control of their identity while ensuring the highest level of security and privacy.
+                    AuraChain was founded in 2025 with a vision to solve the growing challenges of digital identity verification in an increasingly decentralized world. Our team of blockchain enthusiasts and security experts came together to build a platform that puts users in control of their identity while ensuring the highest level of security and privacy.
                   </p>
                   <p className="text-gray-300">
                     We leverage the power of Solana blockchain to create a seamless, secure, and transparent verification system that eliminates the vulnerabilities of traditional centralized identity systems.
@@ -216,9 +216,9 @@ const AboutUs = () => {
               <div className="h-8 w-8 rounded-full bg-gradient-to-r from-web3-purple via-web3-blue to-web3-teal flex items-center justify-center">
                 <Shield className="h-4 w-4 text-white" />
               </div>
-              <span className="text-sm text-white/70">BlockVerify © 2025</span>
+              <span className="text-sm text-white/70">AuraChain © 2025</span>
             </div>
-            <div className="text-sm text-white/50">Built with 💜 by Team BlockVerify</div>
+            <div className="text-sm text-white/50">Built with 💜 by Team AuraChain</div>
           </div>
         </div>
       </footer>

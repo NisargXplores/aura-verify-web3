@@ -13,6 +13,8 @@ const connection = new Connection(
   "confirmed"
 );
 
+// const QRCode = new Connection("");
+
 /**
  * Transfers SOL from the user's wallet to a recipient address
  * 

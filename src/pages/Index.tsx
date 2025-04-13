@@ -125,7 +125,7 @@ const Index = () => {
                 <Shield className="h-4 w-4 text-white" />
               </div>
               <div className="flex flex-col">
-                <span className="text-sm text-white/70">BlockVerify © 2025</span>
+                <span className="text-sm text-white/70">AuraChain © 2025</span>
                 <p className="text-xs text-white/50">Securing identities on the blockchain, one verification at a time</p>
               </div>
             </div>
