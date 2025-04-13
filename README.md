@@ -1,4 +1,4 @@
-🧠 Project Overview – AuraVerify
+🧠 Project Overview – [AuraVerify](https://aura-verify-web3.vercel.app/)
 
 🌐 What is AuraVerify?
 AuraVerify is a decentralized biometric identity verification system built on the Solana blockchain. It combines wallet-based identity, biometric facial recognition, and blockchain immutability to enable secure, trustless, and reusable digital identity verification.
