@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Shield, Menu, X, Home, User, FileCheck, LayoutDashboard } from "lucide-react";
+import { Shield, Menu, X, Home, FileCheck, LayoutDashboard } from "lucide-react";
 import WalletConnectionUI from "@/components/wallet/WalletConnectionUI";
 
 const Navbar = () => {
@@ -12,6 +12,7 @@ const Navbar = () => {
     { name: "Home", path: "/", icon: <Home className="h-4 w-4 mr-1" /> },
     { name: "Verify", path: "/verify", icon: <FileCheck className="h-4 w-4 mr-1" /> },
     { name: "Dashboard", path: "/dashboard", icon: <LayoutDashboard className="h-4 w-4 mr-1" /> },
+    { name: "About Us", path: "/about", icon: <FileCheck className="h-4 w-4 mr-1" /> },
   ];
 
   const toggleMenu = () => {
@@ -36,7 +37,7 @@ const Navbar = () => {
                 <div className="absolute -inset-0.5 rounded-full bg-gradient-to-r from-web3-purple via-web3-blue to-web3-teal opacity-30 blur-sm animate-pulse-glow"></div>
               </div>
               <div className="flex flex-col">
-                <h1 className="text-xl font-bold gradient-text-primary tracking-tight font-heading">AuraChain</h1>
+                <h1 className="text-xl font-bold gradient-text-primary tracking-tight font-heading">BlockVerify</h1>
                 <p className="text-xs text-gray-400">Blockchain Identity Verification</p>
               </div>
             </Link>
