@@ -19,28 +19,37 @@ const IdentityCard = ({ txSignature }: IdentityCardProps) => {
     const fetchIdentityData = async () => {
       setLoading(true);
       try {
-        const userId = await supabase.auth.getUser().then(res => res.data.user?.id);
-        if (!userId) {
+        // Get the current user session
+        const { data: authData } = await supabase.auth.getSession();
+        if (!authData.session) {
+          console.log("No authenticated session found");
           setLoading(false);
           return;
         }
         
+        const userId = authData.session.user.id;
+        console.log("Fetching identity data for user:", userId);
+        
+        // Try to fetch data
         const { data, error } = await supabase
           .from('identity_verifications')
           .select('*')
           .eq('user_id', userId)
           .order('created_at', { ascending: false })
           .limit(1)
-          .single();
-          
-        if (error && error.code !== 'PGRST116') {
+          .maybeSingle();
+        
+        if (error) {
           console.error("Error fetching identity data:", error);
           setLoading(false);
           return;
         }
         
         if (data) {
+          console.log("Identity data retrieved:", data);
           setIdentityData(data);
+        } else {
+          console.log("No identity data found for user");
         }
       } catch (error) {
         console.error("Error in fetchIdentityData:", error);

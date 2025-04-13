@@ -12,6 +12,9 @@ import WalletConnectionUI from "@/components/wallet/WalletConnectionUI";
 import { useWallet } from "@/context/WalletContext";
 import TransactionConfirmation from "@/components/transactions/TransactionConfirmation";
 
+// Import icons used in the steps
+import { Wallet, UserRound, CheckCircle, Shield, Coins } from "lucide-react";
+
 enum VerificationStep {
   CONNECT_WALLET,
   PERSONAL_INFO,
@@ -148,11 +151,11 @@ const VerifyIdentity = () => {
           <div className="mb-8">
             <div className="flex items-center justify-between max-w-md mx-auto">
               {[
-                { icon: <Wallet />, label: "Connect" },
-                { icon: <UserRound />, label: "Details" },
-                { icon: <Fingerprint />, label: "Biometrics" },
-                { icon: <CoinsIcon />, label: "Transaction" },
-                { icon: <CheckCircle />, label: "Confirm" },
+                { icon: <Wallet className="h-5 w-5" />, label: "Connect" },
+                { icon: <UserRound className="h-5 w-5" />, label: "Details" },
+                { icon: <Fingerprint className="h-5 w-5" />, label: "Biometrics" },
+                { icon: <Coins className="h-5 w-5" />, label: "Transaction" },
+                { icon: <CheckCircle className="h-5 w-5" />, label: "Confirm" },
               ].map((step, index) => (
                 <div key={index} className="flex flex-col items-center">
                   <div 
@@ -189,11 +192,11 @@ const VerifyIdentity = () => {
               <div className="h-8 w-8 rounded-full bg-gradient-to-r from-web3-purple via-web3-blue to-web3-teal flex items-center justify-center">
                 <Shield className="h-4 w-4 text-white" />
               </div>
-              <span className="text-sm text-gray-400">AuraVerify</span>
+              <span className="text-sm text-gray-400">AuraChain</span>
             </div>
             
             <div className="text-sm text-gray-500">
-              &copy; {new Date().getFullYear()} AuraVerify. All rights reserved.
+              &copy; {new Date().getFullYear()} AuraChain. All rights reserved.
             </div>
           </div>
         </div>
@@ -201,8 +204,5 @@ const VerifyIdentity = () => {
     </div>
   );
 };
-
-// To properly import the icons used in the steps
-import { Wallet, UserRound, CheckCircle, Shield, CoinsIcon } from "lucide-react";
 
 export default VerifyIdentity;

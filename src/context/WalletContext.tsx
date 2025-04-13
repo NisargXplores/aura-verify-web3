@@ -1,7 +1,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { toast } from "sonner";
-import { Connection, PublicKey } from "@solana/web3.js";
+import { Connection, PublicKey, LAMPORTS_PER_SOL } from "@solana/web3.js";
 
 interface WalletContextType {
   connected: boolean;
@@ -55,12 +55,19 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
   const refreshBalance = async () => {
     if (connected && publicKey) {
       try {
-        const balanceInLamports = await connection.getBalance(new PublicKey(publicKey));
-        setBalance(balanceInLamports / 1000000000); // Convert lamports to SOL
+        console.log("Refreshing balance for address:", publicKey);
+        const pubKey = new PublicKey(publicKey);
+        const balanceInLamports = await connection.getBalance(pubKey);
+        const balanceInSOL = balanceInLamports / LAMPORTS_PER_SOL;
+        console.log("Balance in lamports:", balanceInLamports, "SOL:", balanceInSOL);
+        setBalance(balanceInSOL);
+        return balanceInSOL;
       } catch (error) {
         console.error("Failed to fetch balance:", error);
+        throw error;
       }
     }
+    return null;
   };
 
   const connectWallet = async () => {
@@ -88,15 +95,17 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
           description: `Connected to ${publicKey.slice(0, 4)}...${publicKey.slice(-4)}`,
         });
         
-        const balanceInLamports = await connection.getBalance(response.publicKey);
-        setBalance(balanceInLamports / 1000000000); // Convert lamports to SOL
+        // Refresh balance immediately after connecting
+        await refreshBalance();
         
         localStorage.setItem("walletConnected", "true");
+        return publicKey;
       } catch (error) {
         console.error("Connection error:", error);
         toast.error("Failed to connect wallet", {
           description: "There was an error connecting to your wallet.",
         });
+        throw error;
       }
     } finally {
       setConnecting(false);
@@ -119,17 +128,32 @@ export const WalletProvider = ({ children }: WalletProviderProps) => {
     const checkConnectionStatus = async () => {
       const wasConnected = localStorage.getItem("walletConnected") === "true";
       if (wasConnected) {
-        connectWallet();
+        try {
+          await connectWallet();
+        } catch (error) {
+          console.error("Error reconnecting wallet:", error);
+        }
       }
     };
 
     checkConnectionStatus();
+
+    // Set up interval to refresh balance periodically
+    const balanceInterval = setInterval(() => {
+      if (connected && publicKey) {
+        refreshBalance().catch(console.error);
+      }
+    }, 30000); // Refresh every 30 seconds
+
+    return () => {
+      clearInterval(balanceInterval);
+    };
   }, []);
 
   useEffect(() => {
     const handleAccountChange = () => {
       if (connected) {
-        refreshBalance();
+        refreshBalance().catch(console.error);
       }
     };
 

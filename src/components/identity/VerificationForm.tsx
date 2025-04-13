@@ -65,11 +65,38 @@ const VerificationForm = ({ onSubmitSuccess }: VerificationFormProps) => {
     setIsSubmitting(true);
     
     try {
+      // First, ensure user is authenticated with Supabase
+      const { data: authData } = await supabase.auth.getSession();
+      
+      if (!authData.session) {
+        // If not authenticated, sign up with a random email/password
+        // This is a workaround for demo purposes - in a real app, use proper auth
+        const randomEmail = `user_${Math.random().toString(36).substring(2)}@aurachain.example`;
+        const randomPassword = Math.random().toString(36).substring(2);
+        
+        const { error: signUpError } = await supabase.auth.signUp({
+          email: randomEmail,
+          password: randomPassword,
+        });
+        
+        if (signUpError) {
+          console.error("Error signing up:", signUpError);
+          throw new Error("Authentication failed");
+        }
+      }
+      
+      // Get the user ID after ensuring authentication
+      const userId = (await supabase.auth.getUser()).data.user?.id;
+      
+      if (!userId) {
+        throw new Error("Failed to get user ID");
+      }
+      
       // Save verification data to Supabase
       const { error } = await supabase
         .from('identity_verifications')
         .insert({
-          user_id: await supabase.auth.getUser().then(res => res.data.user?.id),
+          user_id: userId,
           full_name: data.fullName,
           email: data.email,
           date_of_birth: data.dateOfBirth.toISOString().split('T')[0],
@@ -164,7 +191,7 @@ const VerificationForm = ({ onSubmitSuccess }: VerificationFormProps) => {
                   )}
                 </button>
               </PopoverTrigger>
-              <PopoverContent className="w-auto p-0 bg-card neo-blur">
+              <PopoverContent className="w-auto p-0 bg-card neo-blur pointer-events-auto">
                 <Calendar
                   mode="single"
                   selected={selectedDate}
@@ -173,6 +200,12 @@ const VerificationForm = ({ onSubmitSuccess }: VerificationFormProps) => {
                     date > new Date() || date < new Date("1900-01-01")
                   }
                   initialFocus
+                  className="p-3 pointer-events-auto"
+                  showOutsideDays
+                  fixedWeeks
+                  captionLayout="dropdown-buttons"
+                  fromYear={1900}
+                  toYear={new Date().getFullYear()}
                 />
               </PopoverContent>
             </Popover>
