@@ -11,7 +11,7 @@ interface WalletContextType {
   balance: number | null;
   connectWallet: () => Promise<void>;
   disconnectWallet: () => void;
-  refreshBalance: () => Promise<void>;
+  refreshBalance: () => Promise<number | null>; // Updated return type here
 }
 
 const WalletContext = createContext<WalletContextType>({
@@ -22,7 +22,7 @@ const WalletContext = createContext<WalletContextType>({
   balance: null,
   connectWallet: async () => {},
   disconnectWallet: () => {},
-  refreshBalance: async () => {},
+  refreshBalance: async () => null, // Updated default implementation
 });
 
 export const useWallet = () => useContext(WalletContext);
