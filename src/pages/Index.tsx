@@ -1,8 +1,7 @@
+
 import React from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Shield, UserRound, Wallet, Users, Target, Lightbulb, GraduationCap, Compass } from "lucide-react";
-import Header from "@/components/layout/Header";
-import Navbar from "@/components/layout/Navbar";
 import GlassMorphismCard from "@/components/ui-elements/GlassMorphismCard";
 import AnimatedButton from "@/components/ui-elements/AnimatedButton";
 import WalletConnectionUI from "@/components/wallet/WalletConnectionUI";
@@ -21,7 +20,7 @@ const Index = () => {
       bio: "Blockchain enthusiast with expertise in Solana development and identity verification systems."
     },
     {
-      name: "Devang Bavaskar",
+      name: "Devang Bhavsar",
       role: "Developer",
       avatar: "/team-member-2.png",
       fallback: "DB",
@@ -49,8 +48,32 @@ const Index = () => {
       <div className="absolute top-20 -left-24 w-96 h-96 rounded-full bg-web3-purple/5 blur-3xl pointer-events-none"></div>
       <div className="absolute bottom-20 -right-24 w-96 h-96 rounded-full bg-web3-blue/5 blur-3xl pointer-events-none"></div>
 
-      <Navbar />
-      <Header />
+      <div className="w-full py-6 px-4 md:px-6 z-10 border-b border-white/5 bg-black/20 backdrop-blur-lg">
+        <div className="max-w-7xl mx-auto flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="relative">
+              <div className="h-10 w-10 rounded-full bg-gradient-to-r from-web3-purple via-web3-blue to-web3-teal flex items-center justify-center">
+                <Shield className="h-5 w-5 text-white" />
+              </div>
+              <div className="absolute -inset-0.5 rounded-full bg-gradient-to-r from-web3-purple via-web3-blue to-web3-teal opacity-30 blur-sm animate-pulse-glow"></div>
+            </div>
+            <div className="flex flex-col">
+              <h1 className="text-xl font-bold gradient-text-primary tracking-tight font-heading">BlockVerify</h1>
+              <p className="text-xs text-gray-400">Blockchain Identity Verification</p>
+            </div>
+          </div>
+          
+          <div className="flex items-center gap-4">
+            <nav className="hidden md:flex items-center space-x-2">
+              <Link to="/" className="px-3 py-2 text-sm font-medium rounded-md bg-white/10 text-white">Home</Link>
+              <Link to="/about" className="px-3 py-2 text-sm font-medium rounded-md text-gray-300 hover:text-white hover:bg-white/5">About Us</Link>
+              <Link to="/verify" className="px-3 py-2 text-sm font-medium rounded-md text-gray-300 hover:text-white hover:bg-white/5">Verify</Link>
+              <Link to="/dashboard" className="px-3 py-2 text-sm font-medium rounded-md text-gray-300 hover:text-white hover:bg-white/5">Dashboard</Link>
+            </nav>
+            <WalletConnectionUI minimal />
+          </div>
+        </div>
+      </div>
 
       <main className="flex-grow flex flex-col items-center justify-center p-4 md:p-6 relative z-10">
         <div className="max-w-5xl w-full mx-auto">
@@ -125,9 +148,9 @@ const Index = () => {
               <div className="h-8 w-8 rounded-full bg-gradient-to-r from-web3-purple via-web3-blue to-web3-teal flex items-center justify-center">
                 <Shield className="h-4 w-4 text-white" />
               </div>
-              <span className="text-sm text-white/70">AuraChain © 2025</span>
+              <span className="text-sm text-white/70">BlockVerify © 2025</span>
             </div>
-            <div className="text-sm text-white/50">Built with 💜 by Team AuraVerify</div>
+            <div className="text-sm text-white/50">Built with 💜 by Team BlockVerify</div>
           </div>
         </div>
       </footer>
